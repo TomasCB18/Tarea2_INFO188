@@ -106,7 +106,7 @@ void radixSortGPU(int *arr, int n) {
     cudaMemcpy(d_input, arr, n * sizeof(int), cudaMemcpyHostToDevice);
 
     dim3 blockSize(256);
-    dim3 gridSize((n + blockSize.x - 1) / blockSize.x);
+    dim3 gridSize(3584);
 
     for (int bit = 0; bit < 32; ++bit) {
         computeMaskKernel<<<gridSize, blockSize>>>(d_input, d_mask, bit, n);
@@ -145,7 +145,9 @@ int main(int argc, char **argv) {
 
     int *arr = new int[n];
     int *temp = new int[n];
+    printf("Inicializando arreglo..."); fflush(stdout);
     initializeArray(arr, n);
+    printf("Arreglo inicializado\n");
 
     double startTime, endTime;
 
@@ -160,18 +162,20 @@ int main(int argc, char **argv) {
         delete[] temp;
         return 1;
     }
-
+    printf("Ordenando arreglo..."); fflush(stdout);
     if (mode == 0) { // CPU Mode
         omp_set_num_threads(threads_or_blocks);
         startTime = omp_get_wtime();
         parallelMergeSort(arr, temp, 0, n, threads_or_blocks);
         endTime = omp_get_wtime();
-        cout << "CPU Merge Sort Time: " << (endTime - startTime) << " seconds" << endl;
+        printf("Arreglo ordenado\n");
+        printf("Tiempo MergeSort en CPU: %f segundos\n",(endTime-startTime)); fflush(stdout);
     } else if (mode == 1) { // GPU Mode
         startTime = omp_get_wtime();
         radixSortGPU(arr, n);
         endTime = omp_get_wtime();
-        cout << "GPU Radix Sort Time: " << (endTime - startTime) << " seconds" << endl;
+        printf("Arreglo ordenado\n");
+        printf("Tiempo RadixSort en GPU: %f segundos\n",(endTime-startTime)); fflush(stdout);
     } else {
         cerr << "Invalid mode. Use 0 for CPU and 1 for GPU." << endl;
         delete[] arr;
