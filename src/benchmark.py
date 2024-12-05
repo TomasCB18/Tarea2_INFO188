@@ -1,4 +1,4 @@
-import pandas as pd
+"""import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
@@ -115,3 +115,130 @@ plot_efficiency_cpu(data)
 plot_speedup_gpu(data)
 plot_efficiency_gpu(data)
 plot_speedup_vs_n(data)
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Cargar los datos desde el archivo CSV sin encabezados
+df = pd.read_csv("../resultados/benchmark_results.csv", header=None)
+
+# Nombrar las columnas para mayor claridad
+df.columns = ["n", "modo", "nt", "tiempo"]
+
+# Función para calcular el speedup
+def calcular_speedup(tiempo_1, tiempo_n):
+    return tiempo_1 / tiempo_n
+
+# Función para calcular la eficiencia paralela
+def calcular_eficiencia_paralela(speedup, num_threads):
+    return speedup / num_threads
+
+# Función para generar los gráficos
+def generar_graficos(df):
+    # Gráfico a: Tiempo vs n
+    df_cpu = df[df["modo"] == 0]  # Filtrar solo CPU
+    df_gpu = df[df["modo"] == 1]  # Filtrar solo GPU
+    
+    plt.figure(figsize=(10, 6))
+    for n in sorted(df_cpu["n"].unique()):
+        df_cpu_n = df_cpu[df_cpu["n"] == n]
+        tiempo_promedio_cpu = df_cpu_n["tiempo"].mean()
+        plt.plot(n, tiempo_promedio_cpu, 'bo')  # Punto azul para CPU
+    
+    for n in sorted(df_gpu["n"].unique()):
+        df_gpu_n = df_gpu[df_gpu["n"] == n]
+        tiempo_promedio_gpu = df_gpu_n["tiempo"].mean()
+        plt.plot(n, tiempo_promedio_gpu, 'ro')  # Punto rojo para GPU
+    
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel("n")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo vs n (CPU vs GPU)")
+    plt.legend(["CPU", "GPU"])
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico b: Speedup vs num-threads (solo CPU)
+    df_cpu_high_n = df_cpu[df_cpu["n"] > 10000000]  # Filtrar valores altos de n
+    speedups = []
+    num_threads = sorted(df_cpu_high_n["nt"].unique())
+    
+    for nt in num_threads:
+        df_nt = df_cpu_high_n[df_cpu_high_n["nt"] == nt]
+        tiempo_1_thread = df_cpu_high_n[df_cpu_high_n["nt"] == 1]["tiempo"].mean()
+        tiempo_nt = df_nt["tiempo"].mean()
+        speedup = calcular_speedup(tiempo_1_thread, tiempo_nt)
+        speedups.append(speedup)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(num_threads, speedups, 'bo-')
+    plt.xlabel("Número de hilos (threads)")
+    plt.ylabel("Speedup")
+    plt.title("Speedup vs num-threads (CPU)")
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico c: Eficiencia paralela vs num-threads (solo CPU)
+    eficiencias = [calcular_eficiencia_paralela(speedup, nt) for speedup, nt in zip(speedups, num_threads)]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(num_threads, eficiencias, 'ro-')
+    plt.xlabel("Número de hilos (threads)")
+    plt.ylabel("Eficiencia paralela")
+    plt.title("Eficiencia paralela vs num-threads (CPU)")
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico d: Speedup vs num-bloques (solo GPU)
+    df_gpu_high_n = df_gpu[df_gpu["n"] > 10000000]  # Filtrar valores altos de n
+    speedups_gpu = []
+    num_bloques = sorted(df_gpu_high_n["nt"].unique())
+    
+    for bloques in num_bloques:
+        df_bloques = df_gpu_high_n[df_gpu_high_n["nt"] == bloques]
+        tiempo_1_bloque = df_gpu_high_n[df_gpu_high_n["nt"] == 1]["tiempo"].mean()
+        tiempo_bloques = df_bloques["tiempo"].mean()
+        speedup_gpu = calcular_speedup(tiempo_1_bloque, tiempo_bloques)
+        speedups_gpu.append(speedup_gpu)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(num_bloques, speedups_gpu, 'bo-')
+    plt.xlabel("Número de bloques CUDA")
+    plt.ylabel("Speedup")
+    plt.title("Speedup vs num-bloques (GPU)")
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico e: Eficiencia paralela vs num-bloques (solo GPU)
+    eficiencias_gpu = [calcular_eficiencia_paralela(speedup_gpu, bloques) for speedup_gpu, bloques in zip(speedups_gpu, num_bloques)]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(num_bloques, eficiencias_gpu, 'ro-')
+    plt.xlabel("Número de bloques CUDA")
+    plt.ylabel("Eficiencia paralela")
+    plt.title("Eficiencia paralela vs num-bloques (GPU)")
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico f: Speedup vs n
+    speedups_std = []
+    for n in sorted(df["n"].unique()):
+        df_n = df[df["n"] == n]
+        tiempo_std_sort = df_n[df_n["modo"] == 2]["tiempo"].mean()  # Asumimos modo 2 es el std::sort
+        tiempo_cpu = df_n[df_n["modo"] == 0]["tiempo"].mean()
+        speedup_std = calcular_speedup(tiempo_std_sort, tiempo_cpu)
+        speedups_std.append(speedup_std)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(sorted(df["n"].unique()), speedups_std, 'go-')
+    plt.xlabel("n")
+    plt.ylabel("Speedup")
+    plt.title("Speedup vs n (comparado con std::sort)")
+    plt.grid(True)
+    plt.show()
+
+# Llamar a la función para generar los gráficos
+generar_graficos(df)
