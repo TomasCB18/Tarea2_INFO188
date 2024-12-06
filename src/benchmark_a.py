@@ -5,15 +5,15 @@ import matplotlib.pyplot as plt
 csv_path = "../resultados/benchmark_results.csv"
 
 # Leer los datos del CSV y asignar nombres a las columnas manualmente
-column_names = ["n", "mode", "threads_or_blocks", "time"]
+column_names = ["n", "mode", "threads_or_gridsize", "time"]
 df = pd.read_csv(csv_path, header=None, names=column_names)
 
 # Promediar los tiempos por configuración (agrupando por n y mode)
 df_avg = df.groupby(["n", "mode"])["time"].mean().reset_index()
 
-# Filtrar datos para CPU (mode = 0) y GPU (mode = 1)
-cpu_data = df_avg[df_avg["mode"] == 0]
-gpu_data = df_avg[df_avg["mode"] == 1]
+# Filtrar datos para CPU (mode = 0) con threads_or_gridsize == 8 y GPU (mode = 1) con threads_or_gridsize == 0
+cpu_data = df_avg[(df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == 8)]
+gpu_data = df_avg[(df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == 0)]
 
 # Graficar Tiempo vs n
 plt.figure(figsize=(10, 6))

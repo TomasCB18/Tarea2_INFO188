@@ -160,31 +160,32 @@ int main(int argc, char **argv) {
         delete[] temp;
         return 1;
     }
+
     //printf("Ordenando arreglo..."); fflush(stdout);
     if (mode == 0) { // CPU Mode
         omp_set_num_threads(threads_or_gridsize);
         startTime = omp_get_wtime();
         parallelMergeSort(arr, temp, 0, n, threads_or_gridsize);
         endTime = omp_get_wtime();
-       // printf("Arreglo ordenado\n");
+        // printf("Arreglo ordenado\n");
         printf("Tiempo MergeSort en CPU: %f segundos\n", (endTime - startTime)); fflush(stdout);
-    } else if (mode == 1) { // GPU Mode
+    }else if (mode == 1) { // GPU Mode
         if (threads_or_gridsize == 0) {
             threads_or_gridsize = (n + 255) / 256;  // calcular gridSize si es 0 por consola (en el primer benchmark, se uso asi)
         }
         startTime = omp_get_wtime();
         radixSortGPU(arr, n, threads_or_gridsize);
         endTime = omp_get_wtime();
-       // printf("Arreglo ordenado\n");
+        // printf("Arreglo ordenado\n");
         printf("Tiempo RadixSort en GPU: %f segundos\n", (endTime - startTime)); fflush(stdout);
-        
     }else if (mode == 2) { // std::sort Mode
         startTime = omp_get_wtime();
         std::sort(arr, arr + n);
         endTime = omp_get_wtime();
+        // printf("Arreglo ordenado\n");
         printf("Tiempo std::sort: %f segundos\n", (endTime - startTime)); fflush(stdout);
-    } else {
-        cerr << "Invalid mode. Use 0 for CPU and 1 for GPU." << endl;
+    }else {
+        cerr << "Invalid mode. Use 0 for CPU, 1 for GPU, or 2 for std::sort." << endl;
         delete[] arr;
         delete[] temp;
         return 1;
