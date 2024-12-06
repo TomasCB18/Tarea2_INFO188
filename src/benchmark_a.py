@@ -9,7 +9,7 @@ df = pd.read_csv(csv_path, header=None, names=column_names)
 
 df.columns = df.columns.str.strip()
 
-# promedio de los tiempos por configuración (agrupando por n y mode)
+# promedio de los tiempos por configuracion (agrupando por n y mode)
 df_avg = df.groupby(["n", "mode", "threads_or_gridsize"])["time"].mean().reset_index()
 
 

@@ -6,11 +6,11 @@ if [ $# -lt 2 ]; then
     exit 1
 fi
 
-# Asignar los valores de los parámetros
-n=$1       # Tamaño del arreglo (primer parámetro)
-mode=$2    # Modo GPU (segundo parámetro: 0 para CPU, 1 para GPU)
 
-# Crear el archivo CSV si no existe
+n=$1       # Tamaño del arreglo 
+mode=$2    # Modo GPU ( 0 para CPU, 1 para GPU)
+
+# crear CSV si no existe
 output_file="../resultados/benchmark_results.csv"
 if [ ! -f "$output_file" ]; then
     echo "n,mode,gridsize,time" > "$output_file"

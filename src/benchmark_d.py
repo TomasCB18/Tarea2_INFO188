@@ -22,7 +22,7 @@ df_fixed_gpu = df_fixed_gpu[(df_fixed_gpu["threads_or_gridsize"] >= 1) & (df_fix
 # promedio los tiempos por número de bloques o threads
 df_avg_gpu = df_fixed_gpu.groupby("threads_or_gridsize")["time"].mean().reset_index()
 
-# Rver si hay un registro con threads_or_gridsize == 1
+# ver si hay un registro con threads_or_gridsize == 1
 if 1 in df_avg_gpu["threads_or_gridsize"].values:
     # calcular el tiempo con 1 bloque (base para el speedup)
     base_time = df_avg_gpu[df_avg_gpu["threads_or_gridsize"] == 1]["time"].values[0]
