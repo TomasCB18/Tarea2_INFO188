@@ -169,6 +169,9 @@ int main(int argc, char **argv) {
        // printf("Arreglo ordenado\n");
         printf("Tiempo MergeSort en CPU: %f segundos\n", (endTime - startTime)); fflush(stdout);
     } else if (mode == 1) { // GPU Mode
+        if (threads_or_gridsize == 0) {
+            threads_or_gridsize = (n + 255) / 256;  // calcular gridSize si es 0 por consola (en el primer benchmark, se uso asi)
+        }
         startTime = omp_get_wtime();
         radixSortGPU(arr, n, threads_or_gridsize);
         endTime = omp_get_wtime();
