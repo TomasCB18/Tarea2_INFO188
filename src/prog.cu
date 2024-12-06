@@ -163,6 +163,10 @@ int main(int argc, char **argv) {
 
     //printf("Ordenando arreglo..."); fflush(stdout);
     if (mode == 0) { // CPU Mode
+        if (threads_or_gridsize == 0) {
+            // Calcula el número de hilos basado en el tamaño del array
+            threads_or_gridsize = min(12, (n + 999) / 1000);
+        }
         omp_set_num_threads(threads_or_gridsize);
         startTime = omp_get_wtime();
         parallelMergeSort(arr, temp, 0, n, threads_or_gridsize);

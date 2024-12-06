@@ -14,7 +14,7 @@ df.columns = df.columns.str.strip()
 df_avg = df.groupby(["n", "mode", "threads_or_gridsize"])["time"].mean().reset_index()
 
 
-# valores de la entrada n
+# valores de la entrada n 
 n_values = [
     1000, 3000, 5000, 7000, 10000,
     30000, 50000, 70000, 100000,
@@ -27,25 +27,28 @@ n_values = [
 
 # diccionario para almacenar los resultados filtrados por cada valor de n
 gpu_data_filtered = {}
+cpu_data_filtered = {}
 
 # iterar los valores de n
 for n in n_values:
     # calcular threads_or_gridsize para cada valor de n, ya que para el primer experimento, se hace sin asignar threads de manera manual
-    threads_or_gridsize = (n + 255) // 256
+    gridsize = (n + 255) // 256
+    threads = min(12, (n + 999) // 1000)  # formula para CPU
     
     # filtro en el df para obtener solo los registros de GPU y el threads_or_gridsize calculado
-    gpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == threads_or_gridsize)]
-    
+    gpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == gridsize)]
     # guardar resultado en el diccionario
     gpu_data_filtered[n] = gpu_data
 
-# obtener los datos filtrados para GPU (Radix Sort) y CPU (Merge Sort)
-cpu_data = df_avg[(df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == 8)]
 
-# concatenar los datos filtrados para GPU en un solo DataFrame
+    cpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == threads)]
+    cpu_data_filtered[n] = cpu_data
+
+
+# concatenar los datos filtrados para gpu y cpu en un solo DataFrame
 gpu_data = pd.concat(gpu_data_filtered.values())
+cpu_data = pd.concat(cpu_data_filtered.values())
 
-# grafico tiempo vs n
 plt.figure(figsize=(10, 6))
 plt.plot(cpu_data["n"], cpu_data["time"], label="CPU (Merge Sort)", marker="o")
 plt.plot(gpu_data["n"], gpu_data["time"], label="GPU (Radix Sort)", marker="x")
