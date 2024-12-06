@@ -81,5 +81,5 @@ plt.legend()
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 
 # Guardar la gráfica
-plt.savefig("../resultados/benchmark_f_comparativo.png")
+plt.savefig("../resultados/benchmark_f.png")
 plt.show()
