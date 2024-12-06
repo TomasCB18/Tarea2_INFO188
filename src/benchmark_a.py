@@ -7,10 +7,10 @@ csv_path = "../resultados/benchmark_results.csv"
 column_names = ["n", "mode", "threads_or_gridsize", "time"]
 df = pd.read_csv(csv_path, header=None, names=column_names)
 
-# Eliminar posibles espacios en blanco de los nombres de las columnas
+
 df.columns = df.columns.str.strip()
 
-# Promedio de los tiempos por configuración (agrupando por n y mode)
+# promedio de los tiempos por configuración (agrupando por n y mode)
 df_avg = df.groupby(["n", "mode", "threads_or_gridsize"])["time"].mean().reset_index()
 
 
@@ -37,7 +37,7 @@ cpu_data = df_avg[(df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == 8)]
 # concatenar los datos filtrados para GPU en un solo DataFrame
 gpu_data = pd.concat(gpu_data_filtered.values())
 
-# Graficar tiempo vs n
+# grafico tiempo vs n
 plt.figure(figsize=(10, 6))
 plt.plot(cpu_data["n"], cpu_data["time"], label="CPU (Merge Sort)", marker="o")
 plt.plot(gpu_data["n"], gpu_data["time"], label="GPU (Radix Sort)", marker="x")
