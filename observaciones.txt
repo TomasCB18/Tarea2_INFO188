@@ -1,0 +1,6 @@
+1- el maximo de potencias a usar es 10^9, con otro superior aparece este error:
+terminate called after throwing an instance of 'std::bad_array_new_length'
+  what():  std::bad_array_new_length
+Aborted
+
+para el benchmark_a = se ejecutaron  10^3,10^3*3...10^8,10^8*3,10^9  tamaños de n tanto para cpu como gpu

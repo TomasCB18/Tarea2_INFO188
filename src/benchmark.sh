@@ -21,3 +21,5 @@ for gridsize in {1..140}; do
     echo "Ejecutando con gridsize=$gridsize..."
     ./prog $n $mode $gridsize
 done
+
+#este script es para el benchmark e), no se compila, simplemente se hace ./benchmark.sh 1000000000 1 (se empieza del 1)
