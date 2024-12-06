@@ -1,21 +1,21 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Ruta del archivo CSV
+
 csv_path = "../resultados/benchmark_results.csv"
 
-# Leer los datos del CSV y asignar nombres a las columnas manualmente
+# read  datos del csv  y asignar nombres a las columnas manualmente
 column_names = ["n", "mode", "threads_or_gridsize", "time"]
 df = pd.read_csv(csv_path, header=None, names=column_names)
 
-# Promediar los tiempos por configuración (agrupando por n y mode)
+# promedio de  los tiempos por configuración (agrupando por n y mode)
 df_avg = df.groupby(["n", "mode"])["time"].mean().reset_index()
 
-# Filtrar datos para CPU (mode = 0) con threads_or_gridsize == 8 y GPU (mode = 1) con threads_or_gridsize == 0
+# filtro datos para CPU (mode = 0) con threads_or_gridsize == 8 y GPU (mode = 1) con threads_or_gridsize == 0
 cpu_data = df_avg[(df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == 8)]
 gpu_data = df_avg[(df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == 0)]
 
-# Graficar Tiempo vs n
+# grafico tiemmpo vs n
 plt.figure(figsize=(10, 6))
 plt.plot(cpu_data["n"], cpu_data["time"], label="CPU (Merge Sort)", marker="o")
 plt.plot(gpu_data["n"], gpu_data["time"], label="GPU (Radix Sort)", marker="x")

@@ -1,33 +1,33 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Ruta del archivo CSV
+
 csv_path = "../resultados/benchmark_results.csv"
 
-# Leer los datos del CSV
+
 column_names = ["n", "mode", "threads_or_gridsize", "time"]
 df = pd.read_csv(csv_path, header=None, names=column_names)
 
-# Filtrar solo datos para CPU (mode = 0) y un tamaño de problema fijo (e.g., n = 100000000)
-n_fixed = df["n"].max()  # Elegir el n más grande como referencia
+# filtrar datos para CPU (mode = 0) y un tamaño de problema fijo (e.g., n = 100000000)
+n_fixed = df["n"].max() 
 df_fixed = df[(df["mode"] == 0) & (df["n"] == n_fixed)]
 
-# Promediar tiempos por número de hilos
+# promedio de  tiempos por numero de hilos
 df_avg = df_fixed.groupby("threads_or_gridsize")["time"].mean().reset_index()
 
-# Calcular el tiempo con 1 hilo (base para el speedup)
+# caclular el tiempo con 1 hilo (base para el speedup)
 base_time = df_avg[df_avg["threads_or_gridsize"] == 1]["time"].values[0]
 
-# Calcular el speedup
+# calcular el speedup
 df_avg["speedup"] = base_time / df_avg["time"]
 
-# Calcular la eficiencia paralela
+# calcular la eficiencia paralela
 df_avg["efficiency"] = df_avg["speedup"] / df_avg["threads_or_gridsize"]
 
-# Graficar Eficiencia vs Número de hilos
+# grafico Eficiencia vs numero de hilos
 plt.figure(figsize=(10, 6))
 plt.plot(df_avg["threads_or_gridsize"], df_avg["efficiency"], marker="o", label="Eficiencia paralela")
-plt.xlabel("Número de Hilos")
+plt.xlabel("numero de Hilos")
 plt.ylabel("Eficiencia Paralela")
 plt.title(f"Eficiencia Paralela del Algoritmo CPU (n = {n_fixed})")
 plt.grid(True, linestyle="--", linewidth=0.5)
