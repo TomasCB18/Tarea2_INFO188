@@ -12,7 +12,7 @@
 
 using namespace std;
 
-// fun para inicializar un arreglo con valores aleatorios
+// funcion para inicializar un arreglo con valores aleatorios
 void initializeArray(int *arr, int n) {
     mt19937 rng(static_cast<unsigned int>(time(0)));
     uniform_int_distribution<int> dist(0, 999999);
@@ -94,7 +94,7 @@ __global__ void scatterKernel(int *d_input, int *d_output, int *d_mask, int *d_s
     }
 }
 
-// fun Radix Sort en GPU
+// funcion Radix Sort en GPU
 void radixSortGPU(int *arr, int n, int gridSize) {
     int *d_input, *d_output, *d_mask, *d_scan;
     cudaMalloc(&d_input, n * sizeof(int));
@@ -177,6 +177,12 @@ int main(int argc, char **argv) {
         endTime = omp_get_wtime();
        // printf("Arreglo ordenado\n");
         printf("Tiempo RadixSort en GPU: %f segundos\n", (endTime - startTime)); fflush(stdout);
+        
+    }else if (mode == 2) { // std::sort Mode
+        startTime = omp_get_wtime();
+        std::sort(arr, arr + n);
+        endTime = omp_get_wtime();
+        printf("Tiempo std::sort: %f segundos\n", (endTime - startTime)); fflush(stdout);
     } else {
         cerr << "Invalid mode. Use 0 for CPU and 1 for GPU." << endl;
         delete[] arr;
