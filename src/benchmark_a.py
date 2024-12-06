@@ -15,7 +15,15 @@ df_avg = df.groupby(["n", "mode", "threads_or_gridsize"])["time"].mean().reset_i
 
 
 # valores de la entrada n
-n_values = [1000, 3000, 10000, 30000, 100000, 300000, 1000000, 3000000, 10000000, 30000000, 100000000, 300000000, 1000000000]
+n_values = [
+    1000, 3000, 5000, 7000, 10000,
+    30000, 50000, 70000, 100000,
+    300000, 500000, 700000, 1000000,
+    3000000, 5000000, 7000000, 10000000,
+    30000000, 50000000, 70000000, 100000000,
+    300000000, 500000000, 700000000
+]
+
 
 # diccionario para almacenar los resultados filtrados por cada valor de n
 gpu_data_filtered = {}
