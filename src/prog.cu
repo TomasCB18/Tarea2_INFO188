@@ -134,7 +134,7 @@ void radixSortGPU(int *arr, int n, int gridSize) {
 
 int main(int argc, char **argv) {
     if (argc != 4) {
-        cerr << "Usage: ./prog <n> <mode> <threads_or_gridsize>" << endl;
+        cerr << "uso: ./prog <n> <mode> <threads_or_gridsize>" << endl;
         return 1;
     }
 
@@ -163,9 +163,9 @@ int main(int argc, char **argv) {
 
     //printf("Ordenando arreglo..."); fflush(stdout);
     if (mode == 0) { // CPU Mode
-        if (threads_or_gridsize == 0) {
+        if (threads_or_gridsize == 0) {//para benchmark a)
             // Calcula el número de hilos basado en el tamaño del array
-            threads_or_gridsize = min(12, (n + 999) / 1000);
+            threads_or_gridsize = 8;//min(12, (n + 999) / 1000);
         }
         omp_set_num_threads(threads_or_gridsize);
         startTime = omp_get_wtime();
@@ -174,8 +174,8 @@ int main(int argc, char **argv) {
         // printf("Arreglo ordenado\n");
         printf("Tiempo MergeSort en CPU: %f segundos\n", (endTime - startTime)); fflush(stdout);
     }else if (mode == 1) { // GPU Mode
-        if (threads_or_gridsize == 0) {
-            threads_or_gridsize = (n + 255) / 256;  // calcular gridSize si es 0 por consola (en el primer benchmark, se uso asi)
+        if (threads_or_gridsize == 0) {//para benchmark a)
+            threads_or_gridsize = 256;//(n + 255) / 256;  // calcular gridSize si es 0 por consola (en el primer benchmark, se uso asi)
         }
         startTime = omp_get_wtime();
         radixSortGPU(arr, n, threads_or_gridsize);
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
         // printf("Arreglo ordenado\n");
         printf("Tiempo std::sort: %f segundos\n", (endTime - startTime)); fflush(stdout);
     }else {
-        cerr << "Invalid mode. Use 0 for CPU, 1 for GPU, or 2 for std::sort." << endl;
+        cerr << "Modo incorrecto. Usar  0 para CPU, 1 para GPU, o 2 para std::sort." << endl;
         delete[] arr;
         delete[] temp;
         return 1;

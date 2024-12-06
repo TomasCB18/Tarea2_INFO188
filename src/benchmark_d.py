@@ -52,5 +52,5 @@ plt.xticks(df_avg_gpu["threads_or_gridsize"].astype(int)[::5])
 plt.xticks(rotation=45)
 
 plt.legend()
-plt.savefig("../resultados/speedup_plot_gpu_clean.png")
+plt.savefig("../resultados/benchmark_d.png")
 plt.show()

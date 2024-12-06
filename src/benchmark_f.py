@@ -36,10 +36,10 @@ plt.xscale("log")  # escala logarítmica para el eje X y para y
 plt.yscale("log")  
 plt.xlabel("Tamaño del arreglo (n)")
 plt.ylabel("Speedup")
-plt.title("Benchmark: Speedup std::sort (sin comparación)")
+plt.title("Benchmark: Speedup std::sort")
 plt.legend()
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 
 # save grafico
-plt.savefig("../resultados/speedup_vs_n_sort_plot.png")
+plt.savefig("../resultados/benchmark_f.png")
 plt.show()

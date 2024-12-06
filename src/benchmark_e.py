@@ -34,24 +34,20 @@ df_avg_gpu["speedup"] = base_time / df_avg_gpu["time"]
 # calcular la eficiencia paralela
 df_avg_gpu["efficiency"] = df_avg_gpu["speedup"] / df_avg_gpu["threads_or_gridsize"]
 
-# Aplicar un suavizado de media móvil a la eficiencia
-window_size = 5  # tamaño de la ventana para el suavizado
-df_avg_gpu["smoothed_efficiency"] = df_avg_gpu["efficiency"].rolling(window=window_size, min_periods=1).mean()
-
-# Graficar la eficiencia paralela suavizada
+# grafico de  Eficiencia Paralela vs numero de Bloques
 plt.figure(figsize=(10, 6))
-plt.plot(df_avg_gpu["threads_or_gridsize"], df_avg_gpu["smoothed_efficiency"], marker="o", label="Eficiencia Paralela Suavizada")
+plt.plot(df_avg_gpu["threads_or_gridsize"], df_avg_gpu["efficiency"], marker="o", label="Eficiencia Paralela GPU")
 plt.xlabel("Número de Bloques CUDA (threads_or_gridsize)")
-plt.ylabel("Eficiencia Paralela Suavizada")
+plt.ylabel("Eficiencia Paralela")
 plt.title(f"Eficiencia Paralela del Algoritmo GPU (n = {n_fixed})")
 plt.grid(True, linestyle="--", linewidth=0.5)
 
-# Ajustar los ticks del eje X para que comiencen desde 1
+# ajustar los ticks del eje X para que comiencen desde 1
 plt.xticks(df_avg_gpu["threads_or_gridsize"].astype(int)[::5])
 
-# Rotar las etiquetas del eje X para mejorar la legibilidad
+# rotar las etiquetas del eje X para mejorar la legibilidad
 plt.xticks(rotation=45)
 
 plt.legend()
-plt.savefig("../resultados/efficiency_plot_gpu.png")
+plt.savefig("../resultados/benchmark_e.png")
 plt.show()

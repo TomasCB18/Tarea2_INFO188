@@ -32,16 +32,16 @@ cpu_data_filtered = {}
 # iterar los valores de n
 for n in n_values:
     # calcular threads_or_gridsize para cada valor de n, ya que para el primer experimento, se hace sin asignar threads de manera manual
-    gridsize = (n + 255) // 256
-    threads = min(12, (n + 999) // 1000)  # formula para CPU
+    #gridsize = (n + 255) // 256
+    #threads = min(12, (n + 999) // 1000)  # formula para CPU
     
     # filtro en el df para obtener solo los registros de GPU y el threads_or_gridsize calculado
-    gpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == gridsize)]
+    gpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 1)] #& (df_avg["threads_or_gridsize"] == gridsize)]
     # guardar resultado en el diccionario
     gpu_data_filtered[n] = gpu_data
 
 
-    cpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == threads)]
+    cpu_data = df_avg[(df_avg["n"] == n) & (df_avg["mode"] == 0)] #& (df_avg["threads_or_gridsize"] == threads)]
     cpu_data_filtered[n] = cpu_data
 
 
@@ -59,5 +59,5 @@ plt.ylabel("Tiempo (segundos)")
 plt.title("Benchmark: Tiempo vs Tamaño del Arreglo (n)")
 plt.legend()
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
-plt.savefig("../resultados/benchmark_plot.png")
+plt.savefig("../resultados/benchmark_a.png")
 plt.show()
