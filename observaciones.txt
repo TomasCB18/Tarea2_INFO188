@@ -1,9 +1,0 @@
-1- el maximo de n recomendado a usar es (10**8)*7, con otro superior como 10**9 en adelante, aparece este error:
-terminate called after throwing an instance of 'std::bad_array_new_length'
-  what():  std::bad_array_new_length
-Aborted
-
-el tiempo en los ordenamientos con 10**9 en caso que funcione, tarda mucho formando saltos demasiados en las curvas, solo se uso en benchmarks 
-que pedian un valor a tope con un n estatico, como los benchmark b),c),d) y e), por lo que el maximo a usar es (10**8)*7 cuando haya que variar de entradas(n dinamico).
-
-por ej, para el benchmark_a = se ejecutaron  10^3,10^3*3,10^3*5,10^3*7...10^8,10^8*3,10^8*5,10^8*7  tamaños de n tanto para cpu como gpu

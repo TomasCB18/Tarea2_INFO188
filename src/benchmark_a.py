@@ -13,8 +13,8 @@ df.columns = df.columns.str.strip()
 df_avg = df.groupby(["n", "mode", "threads_or_gridsize"])["time"].mean().reset_index()
 
 
-cpu_data = df_avg[(df_avg["n"] < 1000000000) & (df_avg["mode"] == 0)]
-gpu_data = df_avg[(df_avg["n"] < 1000000000) & (df_avg["mode"] == 1)]
+cpu_data = df_avg[(df_avg["n"] < 1000000000) & (df_avg["mode"] == 0) & (df_avg["threads_or_gridsize"] == 8)]
+gpu_data = df_avg[(df_avg["n"] < 1000000000) & (df_avg["mode"] == 1) & (df_avg["threads_or_gridsize"] == 256)]
 
 plt.figure(figsize=(10, 6))
 plt.plot(cpu_data["n"], cpu_data["time"], label="CPU (Merge Sort)", marker="o")
@@ -26,5 +26,5 @@ plt.ylabel("Tiempo (segundos)")
 plt.title("Benchmark: Tiempo vs Tamaño del Arreglo (n)")
 plt.legend()
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
-plt.savefig("../resultados/benchmark_a_prueba.png")
+plt.savefig("../resultados/benchmark_a.png")
 plt.show()
