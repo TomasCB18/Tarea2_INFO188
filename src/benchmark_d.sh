@@ -23,3 +23,4 @@ for gridsize in {1..140}; do
 done
 
 #este script es para el benchmark e), no se compila, simplemente se hace ./benchmark.sh 1000000000 1 (se empieza del 1)
+#dejar todo esto como esta , solo cambiar el largo del array 

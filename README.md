@@ -55,6 +55,8 @@ Parámetros:
         Número de hilos para CPU (modo 0).
         Tamaño de la grilla para GPU (modo 1).
 
+Otra forma de ejecutar si se quiere una cantidad grande de experiemntos, es ejecutar los .sh, modificando internamente los parametros
+
 # Modo de ejecucion segun el benchmark
 
 # benchmark a
