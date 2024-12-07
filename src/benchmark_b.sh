@@ -14,6 +14,8 @@ N=100000000
 REPEATS=12    
 MAX_THREADS=8
 
+#EJECUTAR COMO: benchmark_b.sh
+
 # iterar el numero de hilos
 for THREADS in $(seq 1 $MAX_THREADS); do
     for ((i = 1; i <= REPEATS; i++)); do

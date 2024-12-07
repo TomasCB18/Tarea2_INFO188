@@ -22,6 +22,8 @@ SIZES=(
 
 REPEATS=10  # 10 tamaños * 10 repeticiones = 100 experimentos
 
+#EJECUTAR COMO: ./benchmark_af.sh
+
 # Iterar sobre cada tamaño de entrada
 for SIZE in "${SIZES[@]}"; do
     for ((i = 1; i <= REPEATS; i++)); do
